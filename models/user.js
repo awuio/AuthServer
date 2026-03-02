@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -8,6 +7,7 @@ const UserSchema = new mongoose.Schema({
     min: 6,
     max: 255,
   },
+
   email: {
     type: String,
     unique: true,
@@ -26,16 +26,14 @@ const UserSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
+// Hash รหัสผ่านก่อนบันทึกลงฐานข ้อมูล
 UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return;
-  try {
-    this.password = await bcrypt.hash(this.password, 10);
-  } catch (err) {
-    return next(err);
-  }
+  var user = this;
+  if (!user.isModified("password")) return next();
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
 });
-
+// เปรียบเทียบรหัสผ่านที่ผู้ใชป้อนกับรหัสผ่านที่ ้ Hash ที่เก็บในฐานข ้อมูล
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return cb(err);

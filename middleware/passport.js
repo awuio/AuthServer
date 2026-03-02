@@ -7,17 +7,17 @@ var opts = {
   secretOrKey: config.jwtSecret,
 };
 module.exports = new JwtStrategy(opts, function (jwt_payload, done) {
-  User.findById(jwt_payload.id, function (err, user) {
-    if (err) {
-      //พบ error
+  User.findById(jwt_payload.id)
+    .then((user) => {
+      if (user) {
+        //พบ User ID
+        return done(null, user);
+      } else {
+        //ไม่พบ User
+        return done(null, false);
+      }
+    })
+    .catch((err) => {
       return done(err, false);
-    }
-    if (user) {
-      //พบ User ID
-      return done(null, user);
-    } else {
-      //ไม่พบ User
-      return done(null, false);
-    }
-  });
+    });
 });

@@ -4,7 +4,6 @@ const cors = require("cors");
 const passport = require("passport");
 const mongoose = require("mongoose");
 var config = require("./config/config");
-
 app.use(cors());
 
 // Use the passport package in our application
