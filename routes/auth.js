@@ -18,9 +18,7 @@ router.post("/register", async (req, res) => {
   const result = registerValidation(req.body);
   if (result.error != undefined)
     return res.status(400).send(result.error.details[0].message);
-  //หาอีเมลซํ้
-  า;
-
+  //หาอีเมลซํ้า
   const emialExist = await User.findOne({ email: req.body.email });
   if (emialExist) return res.status(400).send("E-mail already exists!");
   const user = new User({
@@ -30,10 +28,6 @@ router.post("/register", async (req, res) => {
   });
   try {
     const savedUser = await user.save();
-    //แสดงข ้อมูลทั้งหมดของ user
-    //res.send(savedUser);
-    //แสดง id ที่ได ้หลังจากบันทึกสํ
-    าเร็จ;
     res.send({ user: user._id });
   } catch (err) {
     res.status(400).send(err);
