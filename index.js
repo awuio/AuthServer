@@ -4,6 +4,7 @@ const cors = require("cors");
 const passport = require("passport");
 const mongoose = require("mongoose");
 var config = require("./config/config");
+
 app.use(cors());
 
 // Use the passport package in our application
@@ -15,6 +16,7 @@ const authRoute = require("./routes/auth");
 const homeRoute = require("./routes/home");
 //Connect to DB
 mongoose.connect(config.db).then(() => console.log("Connected to db!"));
+
 app.use(express.json());
 //Middleware
 app.use("/api/user", authRoute);
